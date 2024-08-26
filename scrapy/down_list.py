@@ -17,7 +17,7 @@ from down_book import down_txt
 
 __all__ = ['down_list']
 
-logger = logging.getLogger('gh-actions.down-txt.down-list')
+logger = logging.getLogger('scrapy.down-txt.down-list')
 
 辰东 = ['https://www.biququ.info/html/48260', 'https://www.biququ.info/html/27746', 'https://www.biququ.info/html/4234',
         'https://www.biququ.info/html/27743', 'https://www.biququ.info/html/36094', 'https://www.biququ.info/html/27765',

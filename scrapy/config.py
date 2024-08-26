@@ -13,23 +13,32 @@ from dataclasses import dataclass
 
 @dataclass
 class BookCss:
+    # 书籍名称
     BOOK_NAME: str
+    # 书籍作者
     BOOK_AUTHOR: str
+    # 书籍列表
     BOOK_LIST: str
+    # 书籍内容
     BOOK_CONTENT: str
+    # 书籍列表下一页
     BOOK_LIST_NEXT: str = None
+    # 书籍内容下一页
     BOOK_CONTENT_NEXT: str = None
 
     @abstractmethod
     def book_id(self, url):
+        """根据url获取书籍id"""
         pass
 
     @abstractmethod
     def chapter_id(self, url):
+        """根据url获取章节ID， idd"""
         pass
 
     @abstractmethod
     def page_id(self, url):
+        """根据url获取页面ID"""
         pass
 
 
@@ -51,12 +60,12 @@ class BookCssQushu(BookCss):
 
     def chapter_id(self, url):
         path = urllib.parse.urlsplit(url).path
-        return path.split('/')[-1].split('.')[0].split('_')[1]
+        return path.split('/')[-1].split('.')[0].split('_')[0]
 
     def page_id(self, url):
         try:
             path = urllib.parse.urlsplit(url).path
-            return path.split('/')[-1].split('.')[0].split('_')[2]
+            return path.split('/')[-1].split('.')[0].split('_')[1]
         except IndexError:
             return 1
 
@@ -77,6 +86,24 @@ DOMAIN_CONFIGS = {
         "BOOK_LIST_NEXT": "body > div.container.autoheight > div.list-chapter > div.booklist > div:nth-child(2) > span.right > a",
         "BOOK_CONTENT": "#chaptercontent",
         "BOOK_CONTENT_NEXT": "#chaptercontent > p > a",
+    },
+    "www.jidewx.com": {
+        'class': BookCssBiququ,
+        "BOOK_NAME": "#info > h1",
+        "BOOK_AUTHOR": "#info > p:nth-child(4)",
+        "BOOK_LIST": "body > div.listmain > dl > dd > a",
+        "BOOK_CONTENT": "#content",
+    },
+    "www.paozww.com": {
+        'class': BookCssQushu,
+    },
+    "www.axs6.com": {
+        "class": BookCssQushu,
+        "BOOK_NAME": "#info > h1",
+        "BOOK_AUTHOR": "#info > div > span:nth-child(1)",
+        "BOOK_LIST": "#list > dl:nth-child(4) > dd > a",
+        "BOOK_CONTENT": "#nr_content > p",
+        "BOOK_CONTENT_NEXT": "#nexturl",
     }
 }
 
@@ -121,15 +148,17 @@ LOG_CONFIG = {
 
     },
     "loggers": {
-        "gh-actions": {
+        "scrapy": {
             "level": "DEBUG",
             "handlers": ["console"],
-            "propagate": False,
+        },
+        "sqllib": {
+            "level": "DEBUG",
+            "handlers": ["console"],
         },
     },
     "root": {
         "level": "DEBUG",
         "handlers": ["file"],
     },
-
 }

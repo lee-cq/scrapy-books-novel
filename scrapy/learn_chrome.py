@@ -16,7 +16,7 @@ from selenium.webdriver.common.by import By
 
 from chrome import chrome
 
-logger = logging.getLogger("gh-actions.down-txt.sql")
+logger = logging.getLogger("scrapy.down-txt.sql")
 
 
 class Learn:
